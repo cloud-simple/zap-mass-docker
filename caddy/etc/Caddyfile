@@ -1,0 +1,15 @@
+example.com:80
+
+root * /srv/src
+
+file_server
+templates
+encode gzip
+
+try_files {path}.html {path}
+
+redir   /reports          /
+redir   /reports/         /
+rewrite /reports/*        /reports/index.html
+
+#reverse_proxy /api/* localhost:4444

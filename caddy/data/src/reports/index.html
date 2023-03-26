@@ -1,0 +1,20 @@
+{{$pathParts := splitList "/" .OriginalReq.URL.Path}}
+{{$markdownFilename := default "index" (slice $pathParts 2 | join "/")}}
+{{$markdownFilePath := printf "/reports/markdown/%s.md" $markdownFilename}}
+{{if not (fileExists $markdownFilePath)}}{{httpError 404}}{{end}}
+{{$markdownFile := (include $markdownFilePath | splitFrontMatter)}}
+{{$title := default $markdownFilename $markdownFile.Meta.title}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{$title}} &mdash; OWASP ZAP report</title>
+		{{include "/includes/reports/head.html"}}
+	</head>
+	<body>
+		<main>
+			<div class="article-container">
+				<article>{{markdown $markdownFile.Body}}</article>
+			</div>
+		</main>
+	</body>
+</html>

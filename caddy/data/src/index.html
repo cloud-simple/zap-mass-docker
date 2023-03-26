@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>OWASP ZAP reports</title>
+		{{include "/includes/head.html"}}
+		<link rel="stylesheet" href="/resources/css/home.css">
+	</head>
+	<body>
+		<div class="hero">
+			<div class="wrapper">
+				<h1>OWASP ZAP Reports</h1>
+				<h2>To view reports, please use <b>individual dedicated links</b> provided by security team</h2>
+			</div>
+		</div>
+
+		<section class="alternate">
+			<div class="wrapper">
+				<div class="side-by-side">
+					<div class="side-by-side-content">
+						<h3>Details</h3>
+                                                <p>
+						<b>List of sites for scanning</b> is maintained by security team.
+						</p>
+
+						<p>
+						Scanning reports are available by <b>individual dedicated links</b> provided by security team.
+						</p>
+
+						<p>
+						Contact us to get started:
+                                                <a href="mailto:{{ env "EMAIL_ADDR_CONTACT" | default "contact@example.com" }}" class="button red">Email <b>{{ env "EMAIL_ADDR_CONTACT" | default "contact@example.com" }}</b></a>
+                                                </p>
+					</div>
+					<img src="/resources/images/circle-lock.svg" alt="We use Caddy to host this website.">
+				</div>
+			</div>
+		</section>
+	</body>
+</html>
