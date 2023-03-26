@@ -32,23 +32,27 @@ def sent_notification (emails, subject, text):
 ######### ######### ######### ######### ######### ######### ######### ######### ######### 
 def parse_results (site, date_file_name, is_summary_file, file_w, history_file_name):
   schema_host_name = env_http_scheme + '://' + env_http_domain
-  date = os.path.basename(date_file_name).removesuffix(".md")
+  date_of_file = os.path.basename(date_file_name).removesuffix(".md")
 
-  # print ("== log (parse_results): site: " + site + " | date: " + date + " | date_file_name: " + date_file_name + " | summary: " + str(is_summary_file) + " | history_file_name: " + history_file_name)
+  # print ("== log (parse_results): site: " + site + " | date_of_file: " + date_of_file + " | date_file_name: " + date_file_name + " | summary: " + str(is_summary_file) + " | history_file_name: " + history_file_name)
 
   date_file_link = '/reports/' + os.path.basename(os.path.dirname(os.path.dirname(date_file_name))) + '/data/' + os.path.basename(date_file_name).removesuffix(".md")
   history_file_link = '/reports/' + os.path.basename(os.path.dirname(history_file_name)) + '/' + os.path.basename(history_file_name).removesuffix(".md")
 
-  link = ''
+  date = ''
+  target = ''
   email_list = ''
+  link = ''
   ok = ''
   fail = ''
   warn = ''
 
   re_res_weekly = re.compile(r'^FAIL-NEW: (\d+)\tFAIL-INPROG: (\d+)\tWARN-NEW: (\d+)\tWARN-INPROG: (\d+)\tINFO: (\d+)\tIGNORE: (\d+)\tPASS: (\d+)')
   re_res_other = re.compile(r'^FAIL: (\d+)\tWARN: (\d+)\tINFO: (\d+)\tIGNORE: (\d+)\tPASS: (\d+)')
-  re_link = re.compile(r'^LINK: (\S+)')
+  re_date = re.compile(r'^DATE: (\S+)')
+  re_target = re.compile(r'^TARGET: (\S+)')
   re_emails = re.compile(r'^EMAILS: (\S+)')
+  re_link = re.compile(r'^LINK: (\S+)')
 
   with open(date_file_name, 'r') as f:
     for line in f:
@@ -68,16 +72,28 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
           warn = scores[0][1]
         continue
 
-      if bool(re_link.search(line)):
-        links = re_link.findall(line)
-        if len(links) == 1:
-          link = links[0]
+      if bool(re_date.search(line)):
+        dates = re_date.findall(line)
+        if len(dates) == 1:
+          date = dates[0]
+        continue
+
+      if bool(re_target.search(line)):
+        targets = re_target.findall(line)
+        if len(targets) == 1:
+          target = targets[0]
         continue
 
       if bool(re_emails.search(line)):
         emails = re_emails.findall(line)
         if len(emails) == 1:
           email_list = emails[0]
+        continue
+
+      if bool(re_link.search(line)):
+        links = re_link.findall(line)
+        if len(links) == 1:
+          link = links[0]
         continue
 
     ### for end ###
@@ -106,26 +122,38 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
         file_w.write ('| N/A | N/A | N/A')
 
       if is_summary_file:
-        file_w.write ('| [' + date + '](' + history_file_link + ') |')
+        file_w.write ('| [' + date_of_file + '](' + history_file_link + ') |')
       else:
-        file_w.write ('| [' + date + '](' + date_file_link + ') |')
+        file_w.write ('| [' + date_of_file + '](' + date_file_link + ') |')
 
       file_w.write ('\n')
     except:
       traceback.print_exc()
 
     if is_summary_file and len(email_list) > 0 and email_list != "null":
+      if len(date) == 0:
+        date = date_of_file
+
+      if len(target) == 0:
+        target = 'N/A'
+
+      domain_name = target.split('/')[2]
+      if len(domain_name) == 0:
+        domain_name = 'N/A'
+
+      subject = f'OWASP ZAP scanning for {domain_name} on {date}'
+
       if len(ok) > 0:
         if int(fail) > 0 or int(warn) > 0:
-          subject = f'The scanning result score are: fails={fail}, warns={warn}'
-          text = f'There are fails or warns in the last scanning report:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
+          text = f'Date:\n\t{date}\nTarget:\n\t{target}\nThere are fails or warns in the last scanning report:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
+          subject = subject + ' /score'
           sent_notification (email_list, subject, text)
-          print ("== log: notification sent: warns or fails; to: " + email_list)
+          print ("== log: notification 'fails or warns' sent to: " + email_list)
       else:
-        subject = f'The scanning result report has wrong formant'
-        text = f'The given scanning report does not correspond to appropriate format:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
+        text = f'Date:\n\t{date}\nTarget:\n\t{target}\nThe scanning report does not correspond to appropriate format:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
+        subject = subject + ' /format'
         sent_notification (email_list, subject, text)
-        print ("== log: notification sent: wrong report; to: " + email_list)
+        print ("== log: notification 'wrong report' sent to: " + email_list)
 
 ######### ######### ######### ######### ######### ######### ######### ######### ######### 
 def handle_site (history_file_name, summary_file_w):
