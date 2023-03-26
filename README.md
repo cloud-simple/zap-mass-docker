@@ -12,7 +12,7 @@
 * Copy the directory `caddy` with its content to `/srv/docker/`. As a result you should have `/srv/docker/caddy/{etc,data}` directory structures
 * There should be a directory `/srv/docker/caddy/data/src/reports/markdown/m_<ID>` with file `mailings.md` containing a list of target URLs to scan
 * Edit the mentioned file (`mailings.md`) to add your targets according to its structure
-* The following is an example of `mailings.md` content. Lines which start with `🟢` symbol are parsed. Fields of columns **Site**, **Report URL**, and **Notification Emails** are exxtracted and used to scan targets and store the results
+* The following is an example of `mailings.md` content. Lines which start with `🟢` symbol are parsed. Fields of columns **Site**, **Report URL**, and **Notification Emails** are extracted and used to scan targets and store the results
 
 ```
 On/Off | Site | HTTP Req Status | HTTPS Req Status | Report URL | Notification Emails
