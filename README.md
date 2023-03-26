@@ -44,7 +44,10 @@ rewrite /reports/*        /reports/index.html
 * Run Caddy container with the following command
 
 ```
-docker run --rm -d --name caddy -p 80:80 -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile -v /srv/docker/caddy/data/src/:/srv/src caddy
+docker run --rm -d --name caddy -p 80:80 \
+  -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile \
+  -v /srv/docker/caddy/data/src/:/srv/src \
+  caddy
 ```
 
 * You can specify the following environment variables, to be different of their following default values, with `-e` flag
@@ -56,7 +59,11 @@ EMAIL_ADDR_CONTACT=contact@example.com # contact email address used on index pag
 * For examplle, to specify a contact email address used on index page use the following command
 
 ```
-docker run --rm -d -e "EMAIL_ADDR_CONTACT=infosec@example.com" --name caddy -p 80:80 -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile -v /srv/docker/caddy/data/src/:/srv/src caddy
+docker run --rm -d --name caddy -p 80:80 \
+  -e "EMAIL_ADDR_CONTACT=infosec@example.com" \
+  -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile \
+  -v /srv/docker/caddy/data/src/:/srv/src \
+  caddy
 ```
 
 ## 'ZAP Mass Baseline' usage
@@ -74,7 +81,9 @@ docker build -t local/mass-baseline .
 * To scan target URLs maintained in `mailings.md` file of the corresponding directory run the following command (where `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x` is the ID of the directory of name `m_<ID>` with `mailings.md` file)
 
 ```
-docker run --rm -d --name mass-baseline -u zap -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
+docker run --rm -d --name mass-baseline -u zap \
+  -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw \
+  local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
 ```
 
 * You can specify the following environment variables, to be different of their following default values, with `-e` flag
@@ -90,7 +99,10 @@ HTTP_DOMAIN=example.com             # HTTP domain used to form HTTP URLs
 * For examplle, to specify an email address from which email notifications will be sent use the following command
 
 ```
-docker run --rm -d --name mass-baseline -u zap -e "EMAIL_ADDR_FROM=infosec@example.com" -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
+docker run --rm -d --name mass-baseline -u zap \
+  -e "EMAIL_ADDR_FROM=infosec@example.com" \
+  -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw \
+  local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
 ```
 
 * **ZAP Mass Baseline** container stores scanning results to the directories `/r_*` under `/srv/docker/caddy/data/src/reports/markdown`, where particular directories' names are specified in `mailings.md` file
@@ -98,5 +110,5 @@ docker run --rm -d --name mass-baseline -u zap -e "EMAIL_ADDR_FROM=infosec@examp
 ### Access result reports (and list of target URLs)
 
 * The following URLs can be used to access result reports and list of target URLs (here is the ID `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x` which corresponds to the described above directory structure)
-  * `http://server.name/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/baseline-summary` - result reports, available as **ZAP Mass Baseline** container finishes
-  * `http://server.name/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/mailings` - list of configured target URLs
+  * `http://example.com/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/baseline-summary` - result reports, available as **ZAP Mass Baseline** container finishes
+  * `http://example.com/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/mailings` - list of configured target URLs
