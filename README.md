@@ -12,6 +12,15 @@
 * Copy the directory `caddy` with its content to `/srv/docker/`. As a result you should have `/srv/docker/caddy/{etc,data}` directory structures
 * There should be a directory `/srv/docker/caddy/data/src/reports/markdown/m_<ID>` with file `mailings.md` containing a list of target URLs to scan
 * Edit the mentioned file (`mailings.md`) to add your targets according to its structure
+* The following is an example of `mailings.md` content. Lines which start with `🟢` symbol are parsed. Fields of columns **Site**, **Report URL**, and **Notification Emails** are exxtracted and used to scan targets and store the results
+
+```
+On/Off | Site | HTTP Req Status | HTTPS Req Status | Report URL | Notification Emails
+------ | ---- | --------------- | ---------------- | ---------- | -------------------
+🟢 | [example.com](https://example.com) |` 301 => https://example.com/ `|` 200 `| [show...](/reports/r_mytseOSqv3WfUqZ1jCatVD8OgaTqsC9J9P30C4SS/example.com_history) |security@example.com
+🔴 | [www.example.com](https://www.example.com) |` ❗ no DNS record `|` ❗ no DNS record `| - | -
+```
+
 * The name of the directory where the mentioned file located (`m_<ID>`) contains the ID passed thereafter to the **ZAP Mass Baseline** container (its `mass-baseline` command)
 * In the following example the ID is `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x`, and the directory name is `m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x`
 
