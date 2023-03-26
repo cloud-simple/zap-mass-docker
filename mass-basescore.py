@@ -118,12 +118,12 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
       if len(ok) > 0:
         if int(fail) > 0 or int(warn) > 0:
           subject = f'The scanning result score are: fails={fail}, warns={warn}'
-          text = f'There are fails or warns in the last scanning report:\t{schema_host_name}{date_file_link}\nSee historical details at:\t{schema_host_name}{history_file_link}'
+          text = f'There are fails or warns in the last scanning report:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
           sent_notification (email, subject, text)
           print ("== log: notification sent: warns or fails")
       else:
         subject = f'The scanning result report has wrong formant'
-        text = f'The given scanning report does not correspond to appropriate format:\t{schema_host_name}{date_file_link}\nSee historical details at:\t{schema_host_name}{history_file_link}'
+        text = f'The given scanning report does not correspond to appropriate format:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
         sent_notification (email, subject, text)
         print ("== log: notification sent: wrong report")
 
