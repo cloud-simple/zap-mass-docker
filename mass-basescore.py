@@ -40,7 +40,7 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
   history_file_link = '/reports/' + os.path.basename(os.path.dirname(history_file_name)) + '/' + os.path.basename(history_file_name).removesuffix(".md")
 
   link = ''
-  email = ''
+  email_list = ''
   ok = ''
   fail = ''
   warn = ''
@@ -77,7 +77,7 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
       if bool(re_emails.search(line)):
         emails = re_emails.findall(line)
         if len(emails) == 1:
-          email = emails[0]
+          email_list = emails[0]
         continue
 
     ### for end ###
@@ -114,18 +114,18 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
     except:
       traceback.print_exc()
 
-    if is_summary_file and len(email) > 0 and email != "null":
+    if is_summary_file and len(email_list) > 0 and email_list != "null":
       if len(ok) > 0:
         if int(fail) > 0 or int(warn) > 0:
           subject = f'The scanning result score are: fails={fail}, warns={warn}'
           text = f'There are fails or warns in the last scanning report:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
-          sent_notification (email, subject, text)
-          print ("== log: notification sent: warns or fails")
+          sent_notification (email_list, subject, text)
+          print ("== log: notification sent: warns or fails; to: " + email_list)
       else:
         subject = f'The scanning result report has wrong formant'
         text = f'The given scanning report does not correspond to appropriate format:\n\t{schema_host_name}{date_file_link}\nSee historical details at:\n\t{schema_host_name}{history_file_link}'
-        sent_notification (email, subject, text)
-        print ("== log: notification sent: wrong report")
+        sent_notification (email_list, subject, text)
+        print ("== log: notification sent: wrong report; to: " + email_list)
 
 ######### ######### ######### ######### ######### ######### ######### ######### ######### 
 def handle_site (history_file_name, summary_file_w):
