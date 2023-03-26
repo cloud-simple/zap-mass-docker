@@ -34,7 +34,7 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
   schema_host_name = env_http_scheme + '://' + env_http_domain
   date = os.path.basename(date_file_name).removesuffix(".md")
 
-  # print ('== log (parse_results): site: ' + site + ' | date: ' + date + ' | date_file_name: ' + date_file_name + ' | summary: ' + str(is_summary_file) + ' | history_file_name: ' + history_file_name)
+  # print ("== log (parse_results): site: " + site + " | date: " + date + " | date_file_name: " + date_file_name + " | summary: " + str(is_summary_file) + " | history_file_name: " + history_file_name)
 
   date_file_link = '/reports/' + os.path.basename(os.path.dirname(os.path.dirname(date_file_name))) + '/data/' + os.path.basename(date_file_name).removesuffix(".md")
   history_file_link = '/reports/' + os.path.basename(os.path.dirname(history_file_name)) + '/' + os.path.basename(history_file_name).removesuffix(".md")
@@ -120,12 +120,12 @@ def parse_results (site, date_file_name, is_summary_file, file_w, history_file_n
           subject = f'The scanning result score are: fails={fail}, warns={warn}'
           text = f'There are fails or warns in the last scanning report:\t{schema_host_name}{date_file_link}\nSee historical details at:\t{schema_host_name}{history_file_link}'
           sent_notification (email, subject, text)
-          print ('== log: notification sent: warns or fails")
+          print ("== log: notification sent: warns or fails")
       else:
         subject = f'The scanning result report has wrong formant'
         text = f'The given scanning report does not correspond to appropriate format:\t{schema_host_name}{date_file_link}\nSee historical details at:\t{schema_host_name}{history_file_link}'
         sent_notification (email, subject, text)
-        print ('== log: notification sent: wrong report")
+        print ("== log: notification sent: wrong report")
 
 ######### ######### ######### ######### ######### ######### ######### ######### ######### 
 def handle_site (history_file_name, summary_file_w):
