@@ -144,9 +144,10 @@ caddy: caddy_mount
 	test -n "`docker ps -a -q -f name=caddy -f status=running`" || docker run --rm -d -e "EMAIL_ADDR_CONTACT=xxx@xxxx.xx" --name caddy -p 80:80 -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile -v /srv/docker/caddy/data/src/:/srv/src caddy
 
 caddy_mount:
+	test -d /srv/docker || sudo mkdir -p /srv/docker
 	test -d /srv/docker/caddy || test ! -d caddy || sudo cp -p -r caddy /srv/docker/
-	test -d /srv/docker/caddy/etc || echo "no /srv/docker/caddy/etc directory found, container run will fail" || false
-	test -d /srv/docker/caddy/data || echo "no /srv/docker/caddy/data directory found, container run will fail" || false
+	test -d /srv/docker/caddy/etc || echo "no /srv/docker/caddy/etc directory found, running container will fail" || false
+	test -d /srv/docker/caddy/data || echo "no /srv/docker/caddy/data directory found, running container will fail" || false
 
 caddy_clear:
 	test ! -n "`docker ps -a -q -f name=caddy -f status=running`" || docker stop caddy
@@ -158,3 +159,14 @@ cron_install:
 cron_show:
 	crontab -l | grep -v "^#"
 ```
+
+* Using the above `Makefile` you can follow the below steps to build and deploy the project
+  * `git clone https://github.com/cloud-simple/zap-mass-docker`
+  * `cd zap-mass-docker`
+  * `vi caddy/data/src/reports/markdown/m_*/mailings.md` # change the list of target URLs according to your setup
+  * `vi caddy/etc/Caddyfile` # change web server name and port according to your setup
+  * `vi Makefile` # use the content of the above example and change values for environment variables and crontab fields according to your setup
+  * `make build`
+  * `make run`
+  * `make cron_install`
+  
