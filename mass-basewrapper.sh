@@ -37,6 +37,7 @@ if test -d '/zap/wrk/' ; then
         cat > /zap/wrk/$1/data/$date.md <<- _EOF
 		\`\`\`
 		DATE: $date
+		TIME: $(date +%T:%N)
 		TARGET: https://$2$3
 		EMAILS: $4
 		LINK: $5
