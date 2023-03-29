@@ -126,7 +126,7 @@ docker run --rm -d --name mass-baseline -u zap \
 
 ### Use `make`
 
-* You can create the following `Makefile` to help with development automation
+* You can create the following `Makefile` to help with deployment automation
 
 ```
 all: none
