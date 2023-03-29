@@ -138,10 +138,10 @@ build:
 	docker build -t local/mass-baseline .
 
 run: caddy
-	docker run -d --name mass-baseline -u zap -e "EMAIL_ADDR_FROM=xxxx@xxxx.xx" -e "SMTP_HOST=xxxx.xx" -e "SMTP_PORT=1025" -e "HTTP_SCHEME=http" -e "HTTP_DOMAIN=xxxx.xx" -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
+	docker run --rm -d --name mass-baseline -u zap -e "EMAIL_ADDR_FROM=xxx@xxxx.xx" -e "SMTP_HOST=xxxxx.xxx" -e "SMTP_PORT=25" -e "HTTP_SCHEME=http" -e "HTTP_DOMAIN=xxxxxxxx.xxx" -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
 
 caddy: caddy_mount
-	test -n "`docker ps -a -q -f name=caddy -f status=running`" || docker run --rm -d -e "EMAIL_ADDR_CONTACT=xxxx@xxxx.xx" --name caddy -p 80:80 -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile -v /srv/docker/caddy/data/src/:/srv/src caddy
+	test -n "`docker ps -a -q -f name=caddy -f status=running`" || docker run --rm -d -e "EMAIL_ADDR_CONTACT=xxx@xxxx.xx" --name caddy -p 80:80 -v /srv/docker/caddy/etc/Caddyfile:/etc/caddy/Caddyfile -v /srv/docker/caddy/data/src/:/srv/src caddy
 
 caddy_mount:
 	test -d /srv/docker/caddy || test ! -d caddy || sudo cp -p -r caddy /srv/docker/
@@ -151,4 +151,10 @@ caddy_mount:
 caddy_clear:
 	test ! -n "`docker ps -a -q -f name=caddy -f status=running`" || docker stop caddy
 	sudo mv /srv/docker/caddy /srv/docker/caddy-`date +%F-%s`
+
+cron_install:
+	{ echo '49 3 * * 3 docker run --rm -d --name mass-baseline -u zap -e "EMAIL_ADDR_FROM=xxx@xxxx.xx" -e "SMTP_HOST=xxxxx.xxx" -e "SMTP_PORT=25" -e "HTTP_SCHEME=http" -e "HTTP_DOMAIN=xxxxxxxx.xxx" -v /srv/docker/caddy/data/src/reports/markdown:/zap/wrk/:rw local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x' ; crontab -l | grep -v "^#" ; } | crontab -
+
+cron_show:
+	crontab -l | grep -v "^#"
 ```
