@@ -1,6 +1,6 @@
 # Scanning multiple web sites with OWASP `ZAP Mass Baseline` and serving result reports as markdown with `Caddy`
 
-* Here we have scripts to run [ZAP Baseline Scanning](https://www.zaproxy.org/docs/docker/baseline-scan/) against a series of target URLs
+* Here we have scripts to run OWASP [ZAP Baseline Scanning](https://www.zaproxy.org/docs/docker/baseline-scan/) against a series of target URLs
 * The list of target URLs is maintained as markdown file (`mailings.md`) served with help of [Caddy](https://caddyserver.com/)
 * The results of scanning are stored as markdown files and also served with help of Caddy
 
@@ -21,7 +21,7 @@ On/Off | Site | HTTP Req Status | HTTPS Req Status | Report URL | Notification E
 🔴 | [www.example.com](https://www.example.com) |` ❗ no DNS record `|` ❗ no DNS record `| - | -
 ```
 
-* The name of the directory where the mentioned file located (`m_<ID>`) contains the ID passed thereafter to the **ZAP Mass Baseline** container (its `mass-baseline` command)
+* The name of the directory where the mentioned file located (`m_<ID>`) contains the ID passed thereafter to the OWASP **ZAP Mass Baseline** container (its `mass-baseline` command)
 * In the following example the ID is `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x`, and the directory name is `m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x`
 
 ```
@@ -75,17 +75,17 @@ docker run --rm -d --name caddy -p 80:80 \
   caddy
 ```
 
-## `ZAP Mass Baseline` usage
+## OWASP `ZAP Mass Baseline` usage
 
-### Build `ZAP Mass Baseline` container image
+### Build OWASP `ZAP Mass Baseline` container image
 
-* To build local **ZAP Mass Baseline** container image run the following command
+* To build local OWASP **ZAP Mass Baseline** container image run the following command
  
 ```
 docker build -t local/mass-baseline .
 ```
 
-### Run `ZAP Mass Baseline` container
+### Run OWASP `ZAP Mass Baseline` container
 
 * To scan target URLs maintained in `mailings.md` file of the corresponding directory run the following command (where `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x` is the ID of the directory of name `m_<ID>` with `mailings.md` file)
 
@@ -114,12 +114,12 @@ docker run --rm -d --name mass-baseline -u zap \
   local/mass-baseline mass-baseline.sh wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x
 ```
 
-* **ZAP Mass Baseline** container stores scanning results to the directories `/r_*` under `/srv/docker/caddy/data/src/reports/markdown`, where particular directories' names are specified in `mailings.md` file
+* OWASP **ZAP Mass Baseline** container stores scanning results to the directories `/r_*` under `/srv/docker/caddy/data/src/reports/markdown`, where particular directories' names are specified in `mailings.md` file
 
 ### Access result reports (and list of target URLs)
 
 * The following URLs can be used to access result reports and list of target URLs (here is the ID `wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x` which corresponds to the described above directory structure)
-  * `http://example.com/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/baseline-summary` - result reports, available as **ZAP Mass Baseline** container finishes
+  * `http://example.com/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/baseline-summary` - result reports, available as OWASP **ZAP Mass Baseline** container finishes
   * `http://example.com/reports/m_wiho6vrjbt68gemclnfj9we4azv8eobfrfcfv34x/mailings` - list of configured target URLs
 
 ## Automation
