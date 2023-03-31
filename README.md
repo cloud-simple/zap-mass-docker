@@ -1,4 +1,4 @@
-# Scanning multiple web sites with `ZAP Mass Baseline` and serving result reports as markdown with `Caddy`
+# Scanning multiple web sites with OWASP `ZAP Mass Baseline` and serving result reports as markdown with `Caddy`
 
 * Here we have scripts to run [ZAP Baseline Scanning](https://www.zaproxy.org/docs/docker/baseline-scan/) against a series of target URLs
 * The list of target URLs is maintained as markdown file (`mailings.md`) served with help of [Caddy](https://caddyserver.com/)
