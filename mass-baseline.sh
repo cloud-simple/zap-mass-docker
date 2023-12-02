@@ -54,12 +54,15 @@ while read line ; do
 
   dir=$(dirname "$file")
   test ! -d /zap/wrk/$dir && mkdir /zap/wrk/$dir
+
+  # echo "== log: [$0]: dir: $dir, file: $file, site: $site, emails: $emails"
   ./mass-basewrapper.sh $dir $site / $emails https://$site
 
   touch /zap/wrk/$file
   ( cd $list_dir/ ; ln -s ../$file ./ ; )
 done
 
+# echo -e "== log: [$0] call:\n>>>>>>: $(pwd)/mass-basescore.py $list_dir"
 ./mass-basescore.py $list_dir
 
 # echo "== log: [$0] finished"
