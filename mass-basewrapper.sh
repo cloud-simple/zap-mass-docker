@@ -50,11 +50,11 @@ if test -d '/zap/wrk/' ; then
 		  sed -e 's/^🔴|WARN-IN_PROGRESS/🟢|WARN-IN_PROGRESS/' | \
 		  awk -F"|" '{printf("%s | %s | %s | %s\n",$3,$4,$1,$2);}' | \
 		  sort -t "|" -k1)
-		
+
 		<details>
-		
+
 		<summary><b>Raw Report</b> - click to open/close</summary>
-		
+
 		\`\`\`
 		DATE: $date
 		TARGET: https://$2$3
