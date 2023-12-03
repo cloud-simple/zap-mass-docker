@@ -172,6 +172,8 @@ cron_show:
   
 ## Details for template variables in `caddy/data/src/reports/index.html` file
 
+See [example](https://github.com/caddyserver/website/blob/master/src/docs/index.html)
+
 * `$pathParts`: `[ reports r_test01abcdefgh site.example.com_history]`
 * `$markdownFilename`: `r_test01abcdefgh/site.example.com_history`
 * `$markdownFile`: `{map[] #### site.example.com | Site | Status | Pass | Warn | Fail | Date | | ---- | ------ | ---- | ---- | ---- | ---- | | [site.example.com](https://site.example.com)| [![Score](https://img.shields.io/badge/baseline-fail%202-red.svg)](/reports/r_test01abcdefgh/data/2023-12-02-20-44-32)| 50 | 10 | 2| [2023-12-02-20-44-32](/reports/r_test01abcdefgh/data/2023-12-02-20-44-32) | | [site.example.com](https://site.example.com)| [![Score](https://img.shields.io/badge/baseline-fail%202-red.svg)](/reports/r_test01abcdefgh/data/2023-12-02-20-12-27)| 50 | 10 | 2| [2023-12-02-20-12-27](/reports/r_test01abcdefgh/data/2023-12-02-20-12-27) | }`
